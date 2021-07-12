@@ -15,7 +15,7 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", {
   useNewUrlParser: true,
   useFindAndModify: false
 });
-const db = require("./models/index.js")
+const db = require("./models")
 
 // routes
 require("./routes/api")(app);
