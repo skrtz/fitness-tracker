@@ -3,7 +3,13 @@ const db = require("../models");
 module.exports = function (app) {
     //Get (get) last workout -- grab all workouts, api.js only displays last one on line 11    
     app.get("/api/workouts", (req, res) => {
-        db.Workout.find({}).then(data => res.json(data))
+        db.Workout.aggregate([{
+          $addFields: {
+            totalDuration: {
+              $sum: '$exercises.duration'
+            }
+          }
+        }]).then(data => res.json(data))
             .catch(error => {
                 console.log("error", error)
                 res.json(error);
@@ -34,7 +40,13 @@ module.exports = function (app) {
 
     //Get (get) workouts in range -- find all workout data?
     app.get("/api/workouts/range", (req, res) => {
-        db.Workout.find({}).then(data => 
+        db.Workout.aggregate([{
+          $addFields: {
+            totalDuration: {
+              $sum: '$exercises.duration'
+            }
+          }
+        }]).then(data => 
             res.json(data))
             .catch(error => {
                 console.log("error", error)
